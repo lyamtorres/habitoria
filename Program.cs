@@ -12,12 +12,12 @@ builder.Services.AddDbContext<HabitTracker.Models.HabitContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=habits.db"));
 
 
-// Register CORS to allow requests from the React app (http://localhost:3000)
+// Register CORS to allow requests from the Vite dev server (http://localhost:5173)
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("http://localhost:3000") // React dev server origin
+        policy.WithOrigins("http://localhost:5173") // Vite dev server origin
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
