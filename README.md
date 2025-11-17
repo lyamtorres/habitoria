@@ -23,3 +23,8 @@ This project provides a simple environment to strengthen your understanding of R
 
 ```bash
 dotnet run
+```
+cd client
+npm install
+npm run dev
+```
