@@ -2,6 +2,8 @@
 
 An API and client application designed to track personal habits and their progress. Examples of habits include “drink water,” “read for 20 minutes,” or “stretch your back.” Each habit stores a frequency and a counter for completed days.
 
+![App Interface](client/src/assets/app-interface.png)
+
 ## ✨ Features
 
 - Register new habits
