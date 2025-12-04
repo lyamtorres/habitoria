@@ -1,5 +1,3 @@
-import React from "react";
-
 type HeaderProps = {
 	isDarkMode: boolean;
 	toggleDarkMode: () => void;
@@ -9,7 +7,7 @@ export function Header({ isDarkMode, toggleDarkMode }: HeaderProps) {
 	return (
 		<header className="app-header">
 			<div>
-				<h1 className="app-title">Habit Tracker</h1>
+				<h1 className="app-title">Habitoria</h1>
 				<p className="app-subtitle">
 					Create habits, track your streaks, stay consistent.
 				</p>

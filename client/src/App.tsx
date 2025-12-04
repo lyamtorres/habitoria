@@ -1,8 +1,6 @@
 import "./App.css";
-import { FREQUENCY_OPTIONS, type Frequency } from "./types/habit";
 import { useHabits } from "./hooks/useHabits";
 import { useDarkMode } from "./hooks/useDarkMode";
-import { HabitCard } from "./components/HabitCard";
 import { HabitGrid } from "./components/HabitGrid";
 import { Header } from "./components/Header";
 import { EditHabitModal } from "./components/EditHabitModal";
