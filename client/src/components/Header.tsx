@@ -1,3 +1,4 @@
+import logo from "../assets/logo.png";
 type HeaderProps = {
 	isDarkMode: boolean;
 	toggleDarkMode: () => void;
@@ -6,11 +7,18 @@ type HeaderProps = {
 export function Header({ isDarkMode, toggleDarkMode }: HeaderProps) {
 	return (
 		<header className="app-header">
-			<div>
-				<h1 className="app-title">Habitoria</h1>
-				<p className="app-subtitle">
-					Create habits, track your streaks, stay consistent.
-				</p>
+			<div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+				<img
+				  src={logo}
+				  alt="Habitoria logo"
+				  style={{ width: 80, height: 80, objectFit: "contain" }}
+				/>
+				<div>
+					<h1 className="app-title">Habitoria</h1>
+					<p className="app-subtitle">
+						Create habits, track your streaks, stay consistent.
+					</p>
+				</div>
 			</div>
 			<div className="app-header-actions">
 				<button
