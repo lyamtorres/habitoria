@@ -1,4 +1,3 @@
-import React from "react";
 import { type Habit } from "../types/habit";
 
 export type HabitCardProps = {

@@ -1,4 +1,3 @@
-import React from "react";
 import { FREQUENCY_OPTIONS, type Frequency } from "../types/habit";
 
 type EditHabitModalProps = {
