@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositorios", "Repositorios.csproj", "{99585F06-CE41-E0FD-0071-53C3D6D1920C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Habitoria", "Habitoria.csproj", "{99585F06-CE41-E0FD-0071-53C3D6D1920C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

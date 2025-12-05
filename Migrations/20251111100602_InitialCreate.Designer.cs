@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Repositorios.Migrations
+namespace Habitoria.Migrations
 {
     [DbContext(typeof(HabitContext))]
     [Migration("20251111100602_InitialCreate")]

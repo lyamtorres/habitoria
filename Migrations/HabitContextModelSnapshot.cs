@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Repositorios.Migrations
+namespace Habitoria.Migrations
 {
     [DbContext(typeof(HabitContext))]
     partial class HabitContextModelSnapshot : ModelSnapshot

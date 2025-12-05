@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Repositorios.Migrations
+namespace Habitoria.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
