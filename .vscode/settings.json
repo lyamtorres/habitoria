@@ -1,0 +1,5 @@
+{
+    "appService.preDeployTask": "publish-release",
+    "appService.deploySubpath": "bin/Release/net9.0/publish",
+    "appService.defaultWebAppToDeploy": "/subscriptions/77720983-c9bd-42c7-9d18-5862df1a7ad5/resourceGroups/habitoria/providers/Microsoft.Web/sites/habitoria-api"
+}
