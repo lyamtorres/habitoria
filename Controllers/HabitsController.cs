@@ -1,12 +1,13 @@
 using HabitTracker.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
+using System.Security.Claims;
 
 namespace HabitTracker.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class HabitsController : ControllerBase
     {
 
@@ -17,23 +18,42 @@ namespace HabitTracker.Controllers
             _context = context;
         }
 
+        private string CurrentUserId =>
+            User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
+
+        public record CreateHabitRequest(string Name, string? Category, string Frequency, int CompletedDays);
+
+
         [HttpGet]
         public ActionResult<IEnumerable<Habit>> GetAll()
         {
-            return Ok(_context.Habits.ToList());
+            var uid = CurrentUserId;
+            return Ok(_context.Habits.Where(h => h.UserId == uid).ToList());
         }
 
         [HttpGet("{id}")]
         public ActionResult<Habit> GetById(int id)
         {
-            var habit = _context.Habits.Find(id);
+            var uid = CurrentUserId;
+            var habit = _context.Habits.FirstOrDefault(h => h.Id == id && h.UserId == uid);
             if (habit == null) return NotFound();
             return Ok(habit);
         }
 
         [HttpPost]
-        public ActionResult<Habit> Create(Habit habit)
+        public ActionResult<Habit> Create(CreateHabitRequest req)
         {
+            var uid = CurrentUserId;
+
+            var habit = new Habit
+            {
+                UserId = uid,
+                Name = req.Name,
+                Category = req.Category,
+                Frequency = req.Frequency,
+                CompletedDays = req.CompletedDays
+            };
+
             _context.Habits.Add(habit);
             _context.SaveChanges();
             return CreatedAtAction(nameof(GetById), new { id = habit.Id }, habit);
@@ -42,12 +62,16 @@ namespace HabitTracker.Controllers
         [HttpPut("{id}")]
         public IActionResult Update(int id, Habit updatedHabit)
         {
-            var habit = _context.Habits.Find(id);
+            var uid = CurrentUserId;
+
+            var habit = _context.Habits.FirstOrDefault(h => h.Id == id && h.UserId == uid);
             if (habit == null) return NotFound();
+
             habit.Name = updatedHabit.Name;
             habit.Category = updatedHabit.Category;
             habit.Frequency = updatedHabit.Frequency;
             habit.CompletedDays = updatedHabit.CompletedDays;
+
             _context.SaveChanges();
             return NoContent();
         }
@@ -55,8 +79,11 @@ namespace HabitTracker.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var habit = _context.Habits.Find(id);
+            var uid = CurrentUserId;
+
+            var habit = _context.Habits.FirstOrDefault(h => h.Id == id && h.UserId == uid);
             if (habit == null) return NotFound();
+
             _context.Habits.Remove(habit);
             _context.SaveChanges();
             return NoContent();

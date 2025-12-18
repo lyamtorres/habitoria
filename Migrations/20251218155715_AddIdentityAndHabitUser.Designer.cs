@@ -3,6 +3,7 @@ using System;
 using HabitTracker.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Habitoria.Migrations
 {
     [DbContext(typeof(HabitContext))]
-    partial class HabitContextModelSnapshot : ModelSnapshot
+    [Migration("20251218155715_AddIdentityAndHabitUser")]
+    partial class AddIdentityAndHabitUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.10");
