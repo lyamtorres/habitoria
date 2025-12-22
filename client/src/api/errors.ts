@@ -18,6 +18,8 @@ export type ErrorResponse = {
  * - ASP.NET Core Identity validation errors
  * - Simple text error messages
  * - Structured error responses
+ * 
+ * Note: This function consumes the response body, so the response cannot be read again.
  */
 export async function parseErrorResponse(response: Response): Promise<string> {
   const contentType = response.headers.get("content-type");
@@ -60,7 +62,8 @@ export async function parseErrorResponse(response: Response): Promise<string> {
       // If we got JSON but couldn't extract a message, stringify it
       return JSON.stringify(data);
     } catch {
-      // Fall through to text parsing if JSON parsing fails
+      // If JSON parsing fails, fall back to generic error message
+      return getDefaultErrorMessage(response.status);
     }
   }
   
