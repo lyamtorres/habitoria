@@ -1,8 +1,9 @@
 import type { Habit, Frequency } from "../types/habit";
+import { apiFetch } from "./http";
 
 export async function listHabits(): Promise<Habit[]> {
-  const response = await fetch("/api/habits");
-  if (!response.ok) throw new Error("Failed to load habits.");
+  const response = await apiFetch("/api/habits");
+  if (!response.ok) throw new Error(await response.text());
   return response.json();
 }
 
@@ -12,29 +13,29 @@ export async function createHabit(habit: {
   frequency: Frequency;
   completedDays: number;
 }): Promise<Habit> {
-  const response = await fetch("/api/habits", {
+  const response = await apiFetch("/api/habits", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(habit),
   });
-  if (!response.ok) throw new Error("Failed to create habit.");
+  if (!response.ok) throw new Error(await response.text());
   return response.json();
 }
 
 export async function updateHabit(habit: Habit): Promise<Habit> {
-  const response = await fetch(`/api/habits/${habit.id}`, {
+  const response = await apiFetch(`/api/habits/${habit.id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(habit),
   });
-  if (!response.ok) throw new Error("Failed to update habit.");
+  if (!response.ok) throw new Error(await response.text());
+
+  // API returns 204 NoContent; keep current behavior
   const text = await response.text();
-  return text ? JSON.parse(text) : habit;
+  return text ? (JSON.parse(text) as Habit) : habit;
 }
 
 export async function deleteHabit(id: Habit["id"]): Promise<void> {
-  const response = await fetch(`/api/habits/${id}`, {
-    method: "DELETE",
-  });
-  if (!response.ok) throw new Error("Failed to delete habit.");
+  const response = await apiFetch(`/api/habits/${id}`, { method: "DELETE" });
+  if (!response.ok) throw new Error(await response.text());
 }

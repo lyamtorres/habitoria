@@ -2,12 +2,19 @@ import { useState, useEffect } from "react";
 import { type Habit, type Frequency } from "../types/habit";
 import { listHabits, createHabit, updateHabit, deleteHabit } from "../api/habits";
 
-export function useHabits() {
+// NOTE: This hook used to always load habits on mount.
+// After introducing authentication, the habits endpoints are protected and require a valid token.
+//
+// We therefore accept `isAuthenticated` so the hook can:
+// - Avoid making requests that will reliably fail with 401 when logged out.
+// - Clear any previously-loaded habits when a user logs out (prevents showing stale data).
+// - Re-fetch habits as soon as a user logs in (since the previous `[]` dependency only ran once).
+export function useHabits(isAuthenticated: boolean) {
   const [habits, setHabits] = useState<Habit[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const [newHabit, setNewHabit] = useState<{ name: string; category: string; frequency: Frequency}>(
+  const [newHabit, setNewHabit] = useState<{ name: string; category: string; frequency: Frequency }>(
     { name: "", category: "", frequency: "Daily" }
   );
 
@@ -18,6 +25,18 @@ export function useHabits() {
 
   useEffect(() => {
     const fetchHabits = async () => {
+      // When the user is not authenticated, we intentionally do NOT call the API.
+      // This prevents noisy 401 errors and ensures the UI reflects "logged out"
+      // instead of showing an error state.
+      if (!isAuthenticated) {
+        setHabits([]);
+        setCheckedToday(new Set());
+        setEditHabit(null);
+        setError(null);
+        setLoading(false);
+        return;
+      }
+
       setLoading(true);
       try {
         const data = await listHabits();
@@ -29,8 +48,11 @@ export function useHabits() {
         setLoading(false);
       }
     };
-    fetchHabits();
-  }, []);
+
+    // `void` makes it explicit we are intentionally not awaiting inside the effect.
+    // (It also keeps TypeScript/ESLint happy in stricter configs.)
+    void fetchHabits();
+  }, [isAuthenticated]);
 
   const handleCreateHabit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
