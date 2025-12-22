@@ -1,9 +1,13 @@
 import type { Habit, Frequency } from "../types/habit";
 import { apiFetch } from "./http";
+import { parseErrorResponse } from "./errors";
 
 export async function listHabits(): Promise<Habit[]> {
   const response = await apiFetch("/api/habits");
-  if (!response.ok) throw new Error(await response.text());
+  if (!response.ok) {
+    const errorMessage = await parseErrorResponse(response);
+    throw new Error(errorMessage);
+  }
   return response.json();
 }
 
@@ -18,7 +22,10 @@ export async function createHabit(habit: {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(habit),
   });
-  if (!response.ok) throw new Error(await response.text());
+  if (!response.ok) {
+    const errorMessage = await parseErrorResponse(response);
+    throw new Error(errorMessage);
+  }
   return response.json();
 }
 
@@ -28,7 +35,10 @@ export async function updateHabit(habit: Habit): Promise<Habit> {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(habit),
   });
-  if (!response.ok) throw new Error(await response.text());
+  if (!response.ok) {
+    const errorMessage = await parseErrorResponse(response);
+    throw new Error(errorMessage);
+  }
 
   // API returns 204 NoContent; keep current behavior
   const text = await response.text();
@@ -37,5 +47,8 @@ export async function updateHabit(habit: Habit): Promise<Habit> {
 
 export async function deleteHabit(id: Habit["id"]): Promise<void> {
   const response = await apiFetch(`/api/habits/${id}`, { method: "DELETE" });
-  if (!response.ok) throw new Error(await response.text());
+  if (!response.ok) {
+    const errorMessage = await parseErrorResponse(response);
+    throw new Error(errorMessage);
+  }
 }

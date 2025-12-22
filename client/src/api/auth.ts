@@ -1,4 +1,5 @@
 import { apiFetch } from "./http";
+import { parseErrorResponse } from "./errors";
 
 export type AuthResponse = { token: string; email: string };
 
@@ -8,7 +9,10 @@ export async function register(email: string, password: string): Promise<AuthRes
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
   });
-  if (!res.ok) throw new Error(await res.text());
+  if (!res.ok) {
+    const errorMessage = await parseErrorResponse(res);
+    throw new Error(errorMessage);
+  }
   return res.json();
 }
 
@@ -18,7 +22,10 @@ export async function login(email: string, password: string): Promise<AuthRespon
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
   });
-  if (!res.ok) throw new Error(await res.text());
+  if (!res.ok) {
+    const errorMessage = await parseErrorResponse(res);
+    throw new Error(errorMessage);
+  }
   return res.json();
 }
 
