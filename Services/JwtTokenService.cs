@@ -18,6 +18,21 @@ namespace HabitTracker.Services
 
         public string CreateToken(ApplicationUser user)
         {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user), "User cannot be null");
+            }
+
+            if (string.IsNullOrEmpty(user.Id))
+            {
+                throw new ArgumentException("User Id cannot be null or empty", nameof(user));
+            }
+
+            if (string.IsNullOrEmpty(user.Email) && string.IsNullOrEmpty(user.UserName))
+            {
+                throw new ArgumentException("User must have either Email or UserName", nameof(user));
+            }
+
             var jwtSection = _config.GetSection("Jwt");
             var issuer = jwtSection["Issuer"] ?? throw new InvalidOperationException("Jwt:Issuer missing");
             var audience = jwtSection["Audience"] ?? throw new InvalidOperationException("Jwt:Audience missing");
