@@ -13,6 +13,18 @@ export type ErrorResponse = {
 };
 
 /**
+ * Extracts user-friendly error descriptions from Identity errors.
+ * @param errors Array of Identity errors
+ * @returns Concatenated error descriptions or null if none found
+ */
+function extractIdentityErrorDescriptions(errors: IdentityError[]): string | null {
+  const descriptions = errors
+    .map((err: IdentityError) => err.description)
+    .filter(Boolean);
+  return descriptions.length > 0 ? descriptions.join(" ") : null;
+}
+
+/**
  * Extracts a user-friendly error message from an HTTP response.
  * Handles various response formats including:
  * - ASP.NET Core Identity validation errors
@@ -31,11 +43,9 @@ export async function parseErrorResponse(response: Response): Promise<string> {
       
       // Handle ASP.NET Core Identity errors (array of {code, description})
       if (Array.isArray(data)) {
-        const descriptions = data
-          .map((err: IdentityError) => err.description)
-          .filter(Boolean);
-        if (descriptions.length > 0) {
-          return descriptions.join(" ");
+        const errorMessage = extractIdentityErrorDescriptions(data);
+        if (errorMessage) {
+          return errorMessage;
         }
       }
       
@@ -51,11 +61,9 @@ export async function parseErrorResponse(response: Response): Promise<string> {
       
       // Handle errors property with Identity errors
       if (data.errors && Array.isArray(data.errors)) {
-        const descriptions = data.errors
-          .map((err: IdentityError) => err.description)
-          .filter(Boolean);
-        if (descriptions.length > 0) {
-          return descriptions.join(" ");
+        const errorMessage = extractIdentityErrorDescriptions(data.errors);
+        if (errorMessage) {
+          return errorMessage;
         }
       }
       
