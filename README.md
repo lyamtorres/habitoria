@@ -6,11 +6,14 @@ An API and client application designed to track personal habits and their progre
 
 ## ✨ Features
 
-- Register new habits
-- Mark a habit as completed
-- View progress statistics for each habit
+- User authentication (register, login, logout)
+- User-specific habits (each user manages their own habits)
+- Persistent login (remembers session securely)
+- Add, edit, and delete habits
+- Mark a habit as completed (daily/weekly/monthly tracking)
+- View progress statistics and streaks for each habit
 - Filter habits by category
-- Edit and delete habits
+- Responsive dark mode toggle
 - RESTful API with clean models and validations
 - Modern web client built with React + TypeScript + Vite
 - Simple database migrations with Entity Framework Core
