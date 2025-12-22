@@ -31,7 +31,7 @@ function extractIdentityErrorDescriptions(errors: IdentityError[]): string | nul
  * - Simple text error messages
  * - Structured error responses
  * 
- * Note: This function consumes the response body, so the response cannot be read again.
+ * @warning This function consumes the response body. The response cannot be read again after calling this function.
  */
 export async function parseErrorResponse(response: Response): Promise<string> {
   const contentType = response.headers.get("content-type");
