@@ -231,4 +231,8 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 
+# SQLite database files
+*.db-shm
+*.db-wal
+
 appsettings.Development.json

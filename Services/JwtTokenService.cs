@@ -26,15 +26,7 @@ namespace HabitTracker.Services
             var expiresMinutes = int.TryParse(jwtSection["ExpiresMinutes"], out var m) ? m : 60;
 
             // Validate JWT key meets minimum security requirements
-            var keyBytes = Encoding.UTF8.GetBytes(key);
-            const int minimumKeyLengthBytes = 32; // 256 bits for HMAC-SHA256
-            
-            if (keyBytes.Length < minimumKeyLengthBytes)
-            {
-                throw new InvalidOperationException(
-                    $"JWT signing key must be at least {minimumKeyLengthBytes} bytes ({minimumKeyLengthBytes * 8} bits) for HMAC-SHA256. " +
-                    $"Current key length: {keyBytes.Length} bytes.");
-            }
+            var keyBytes = JwtKeyValidator.ValidateAndGetKeyBytes(key);
 
             var claims = new[]
             {
