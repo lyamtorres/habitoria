@@ -14,7 +14,7 @@
  */
 
 // React imports for context, state, and effects
-import { createContext, useContext, useLayoutEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useLayoutEffect, useMemo, useState } from "react";
 // Helper to set the auth token for API requests
 import { setAuthToken } from "../api/http";
 // API functions for authentication
@@ -50,13 +50,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Derive email from token whenever token changes
   const email = useMemo(() => getEmailFromToken(token), [token]);
 
-  // IMPORTANT: Make sure the API layer sees the token before other `useEffect`s run (e.g. habits fetch).
+  // IMPORTANT: Make sure the API layer sees the token before other hooks run (e.g. habits fetch).
   useLayoutEffect(() => {
     setAuthToken(token);
   }, [token]);
 
   // Whenever the token changes, persist it to localStorage
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (token) {
       localStorage.setItem(TOKEN_KEY, token);
     } else {
