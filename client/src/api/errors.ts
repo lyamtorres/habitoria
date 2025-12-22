@@ -21,7 +21,7 @@ function extractIdentityErrorDescriptions(errors: IdentityError[]): string | nul
   const descriptions = errors
     .map((err: IdentityError) => err.description)
     .filter(Boolean);
-  return descriptions.length > 0 ? descriptions.join(" ") : null;
+  return descriptions.length > 0 ? descriptions.join(". ") : null;
 }
 
 /**
@@ -67,8 +67,8 @@ export async function parseErrorResponse(response: Response): Promise<string> {
         }
       }
       
-      // If we got JSON but couldn't extract a message, stringify it
-      return JSON.stringify(data);
+      // If we got JSON but couldn't extract a message, use generic fallback
+      return getDefaultErrorMessage(response.status);
     } catch {
       // If JSON parsing fails, fall back to generic error message
       return getDefaultErrorMessage(response.status);
