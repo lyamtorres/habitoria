@@ -45,6 +45,9 @@ var jwtKey = jwtSection["Key"] ?? "";
 var jwtIssuer = jwtSection["Issuer"];
 var jwtAudience = jwtSection["Audience"];
 
+// Validate JWT key meets minimum security requirements
+var jwtKeyBytes = JwtKeyValidator.ValidateAndGetKeyBytes(jwtKey);
+
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -57,7 +60,7 @@ builder.Services
             ValidateIssuerSigningKey = true,
             ValidIssuer = jwtIssuer,
             ValidAudience = jwtAudience,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+            IssuerSigningKey = new SymmetricSecurityKey(jwtKeyBytes),
             ClockSkew = TimeSpan.FromMinutes(1),
         };
     });

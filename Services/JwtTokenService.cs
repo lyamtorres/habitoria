@@ -25,6 +25,9 @@ namespace HabitTracker.Services
 
             var expiresMinutes = int.TryParse(jwtSection["ExpiresMinutes"], out var m) ? m : 60;
 
+            // Validate JWT key meets minimum security requirements
+            var keyBytes = JwtKeyValidator.ValidateAndGetKeyBytes(key);
+
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
@@ -32,7 +35,7 @@ namespace HabitTracker.Services
                 new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
             };
 
-            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+            var signingKey = new SymmetricSecurityKey(keyBytes);
             var creds = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
