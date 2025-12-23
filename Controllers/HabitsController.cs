@@ -19,7 +19,8 @@ namespace HabitTracker.Controllers
         }
 
         private string CurrentUserId =>
-            User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
+            User.FindFirstValue(ClaimTypes.NameIdentifier) 
+            ?? throw new InvalidOperationException("User ID claim is missing. This should not happen with [Authorize].");
 
         public record CreateHabitRequest(string Name, string? Category, string Frequency, int CompletedDays);
 
