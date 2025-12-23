@@ -27,6 +27,11 @@ namespace HabitTracker.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<AuthResponse>> Register(RegisterRequest req)
         {
+            if (string.IsNullOrWhiteSpace(req.Email))
+                return BadRequest("Email is required.");
+            if (string.IsNullOrWhiteSpace(req.Password))
+                return BadRequest("Password is required.");
+
             var email = req.Email.Trim().ToLowerInvariant();
 
             var existing = await _users.FindByEmailAsync(email);
@@ -48,6 +53,11 @@ namespace HabitTracker.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<AuthResponse>> Login(LoginRequest req)
         {
+            if (string.IsNullOrWhiteSpace(req.Email))
+                return BadRequest("Email is required.");
+            if (string.IsNullOrWhiteSpace(req.Password))
+                return BadRequest("Password is required.");
+
             var email = req.Email.Trim().ToLowerInvariant();
             var user = await _users.FindByEmailAsync(email);
             if (user == null) return Unauthorized("Invalid credentials.");
