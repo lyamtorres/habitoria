@@ -35,7 +35,14 @@ export function AuthPanel() {
       <form className="new-habit-form" onSubmit={onSubmit}>
         <div className="field">
           <label className="field-label">Email</label>
-          <input className="field-input" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <input
+            className="field-input"
+            type="email"
+            autoComplete="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </div>
 
         <div className="field">
@@ -43,6 +50,8 @@ export function AuthPanel() {
           <input
             className="field-input"
             type="password"
+            autoComplete={mode === "login" ? "current-password" : "new-password"}
+            required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
